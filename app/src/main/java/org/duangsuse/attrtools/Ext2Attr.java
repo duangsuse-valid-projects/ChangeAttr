@@ -63,6 +63,7 @@ public class Ext2Attr implements Closeable {
     }
 
     /** Disconnect form shell */
+    @Override
     public void close() {
         stdin.println("exit");
         stdin.flush();
@@ -102,7 +103,7 @@ public class Ext2Attr implements Closeable {
      *     1 for +i<p>
      *     2 for +a<p>
      *     3 for +i+a<p>
-     *     -1 for no file<p>
+     *     -1 for no file
      *
      * @throws RuntimeException reading attr fails
      */
@@ -134,7 +135,7 @@ public class Ext2Attr implements Closeable {
      *
      * @return 0 for changed<p>
      *     1 for unchanged<p>
-     *     -1 for no file<p>
+     *     -1 for no file
      *
      * @throws RuntimeException change attr fails
      */
@@ -162,7 +163,7 @@ public class Ext2Attr implements Closeable {
      *
      * @return 0 for changed<p>
      *     1 for unchanged<p>
-     *     -1 for no file<p>
+     *     -1 for no file
      *
      * @throws RuntimeException change attr fails
      */

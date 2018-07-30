@@ -19,6 +19,7 @@
             android:theme="@style/Dialog">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="all/*" />
             </intent-filter>

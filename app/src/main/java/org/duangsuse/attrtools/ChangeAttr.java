@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -26,21 +28,16 @@ public class ChangeAttr extends Activity {
 
         readme.setTextIsSelectable(true);
 
-        Intent intent = getIntent();
-        Uri data = intent.getData();
-
-        if (data == null) {
-            Toast.makeText(this, R.string.no_path, Toast.LENGTH_SHORT).show();
+        String path = path();
+        if (path == null) {
             finish();
             return;
         }
 
-        String path = data.getPath();
-
-        Ext2Attr e2 = new Ext2Attr(Environment.getDataDirectory().getAbsolutePath() + "/data/" + getPackageName() + "/lib/libe2im.so");
+        Ext2Attr e2 = new Ext2Attr(getExecPath());
 
         if (!e2.connected())
-            Toast.makeText(this, R.string.connect_failed, Toast.LENGTH_SHORT).show();
+            toast(R.string.connect_failed);
 
         int m = 0;
         String mode = "";
@@ -48,7 +45,7 @@ public class ChangeAttr extends Activity {
         try {
             m = e2.query(path);
         } catch (RuntimeException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            toast(e);
         }
 
         switch (m) {
@@ -74,25 +71,54 @@ public class ChangeAttr extends Activity {
         text.setSpan(colorSpan, start, start + path.length(), Spanned.SPAN_MARK_MARK);
         readme.setText(text);
 
+        // Add immutable
         addi.setOnClickListener((v) -> {
             int i = 0;
             try {
                 i = e2.addi(path);
             } catch (RuntimeException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                toast(e);
             }
             if (i != 0)
-                Toast.makeText(this, R.string.unchanged, Toast.LENGTH_SHORT).show();
+                toast(R.string.unchanged);
         });
+
+        // Remove immutable
         subi.setOnClickListener((v) -> {
             int i = 0;
             try {
                 i = e2.subi(path);
             } catch (RuntimeException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                toast(e);
             }
             if (i != 0)
-                Toast.makeText(this, R.string.unchanged, Toast.LENGTH_SHORT).show();
+                toast(R.string.unchanged);
         });
+    }
+
+    @NonNull
+    private String getExecPath() {
+        return Environment.getDataDirectory().getAbsolutePath() + "/data/" + getPackageName() + "/lib/libe2im.so";
+    }
+
+    private void toast(@NonNull RuntimeException e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void toast(int res_id) {
+        Toast.makeText(this, res_id, Toast.LENGTH_SHORT).show();
+    }
+
+    @Nullable
+    private String path() {
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+
+        if (data == null) {
+            toast(R.string.no_path);
+            return null;
+        }
+
+        return data.getPath();
     }
 }

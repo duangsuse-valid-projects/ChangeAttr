@@ -1,5 +1,7 @@
 /************************************************************************
-  e2immutable is a tiny 'exported' command line 'library' for reading 'Immutable/Append' and changing 'Immutable' attribute
+  e2immutable is a tiny 'exported' command line 'library' for reading
+  'Immutable/Append' and changing 'Immutable' attribute
+
   Copyright (C) 2018 duangsuse
 
   This program is free software; you can redistribute it and/or modify
@@ -61,6 +63,7 @@ int open_attrsctl_fd(const char *path) {
 
   if (stat(path, &fstate) != 0)
     return -2; // stat fails
+
   if (!S_ISREG(fstate.st_mode) && !S_ISDIR(fstate.st_mode))
     return -3; // not acceptable
 
@@ -119,7 +122,7 @@ int fsetattr(const char *path, fsattrs_t *buffer) {
   }
 
 #ifdef E2IMM_IS_64BIT
-  flags = (int)*buffer;
+  flags = (int) *buffer;
   ret = ioctl(fd, EXT2_IOC_SETFLAGS, &flags);
 #else
   ret = ioctl(fd, EXT2_IOC_SETFLAGS, (void *) buffer);
@@ -170,8 +173,10 @@ int main(int argc, char *argv[]) {
     case -1:
       fprintf(stderr, "%s\n", strerror(errno));
       return -2;
+
     case -2:
       return -1;
+
     default:
       break;
   }
@@ -183,16 +188,19 @@ int main(int argc, char *argv[]) {
       if (fs & ATTR_I)
         ret += 1;
       return ret;
+
     case '+':
       if (fs & ATTR_I)
         return 1;
       addattr(fs, ATTR_I);
       break;
+
     case '-':
       if (!(fs & ATTR_I))
         return 1;
       delattr(fs, ATTR_I);
       break;
+
     default:
       return -1;
   }
@@ -201,8 +209,10 @@ int main(int argc, char *argv[]) {
     case -1:
       fprintf(stderr, "%s\n", strerror(errno));
       return -2;
+
     case -2:
       return -1;
+
     default:
       break;
   }
