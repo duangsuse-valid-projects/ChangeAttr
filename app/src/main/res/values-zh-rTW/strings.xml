@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">檔案屬性工具</string>
+    <string name="title_activity_change_attr">修改屬性</string>
+    <string name="file_path">檔案路徑：</string>
+    <string name="mode">檔案狀態：</string>
+    <string name="sub_i">轉為可變</string>
+    <string name="add_i">轉為不可變</string>
+    <string name="loading">載入中…</string>
+    <string name="no_path">獲取檔案路徑失敗</string>
+    <string name="connect_failed">無法連線到 e2im 後端</string>
+    <string name="mode_no">無特殊模式</string>
+    <string name="mode_imm">不可變</string>
+    <string name="mode_app">只增量</string>
+    <string name="mode_imap">只增量且不可變</string>
+    <string name="mode_badfp">檔案路徑錯誤或不可接受</string>
+    <string name="unchanged">屬性沒有改變</string>
+</resources>
