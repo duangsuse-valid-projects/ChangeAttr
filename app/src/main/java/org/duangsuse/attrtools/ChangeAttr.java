@@ -98,7 +98,7 @@ public class ChangeAttr extends Activity {
 
     @NonNull
     private String getExecPath() {
-        return Environment.getDataDirectory().getAbsolutePath() + "/data/" + getPackageName() + "/lib/libe2im.so";
+        return getApplicationInfo().nativeLibraryDir + "/libe2im.so";
     }
 
     private void toast(@NonNull RuntimeException e) {
