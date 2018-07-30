@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Attrtools</string>
+    <string name="title_activity_change_attr">ChangeAttr</string>
+    <string name="file_path">File Path: </string>
+    <string name="mode">File Mode: </string>
+    <string name="add_i">Make Immutable</string>
+    <string name="sub_i">Make Mutable</string>
+    <string name="loading">Loading…</string>
+    <string name="no_path">Failed to fetch file path</string>
+    <string name="connect_failed">Failed to connect to e2im</string>
+    <string name="mode_no">No Mode</string>
+    <string name="mode_imm">Immutable</string>
+    <string name="mode_app">Append</string>
+    <string name="mode_imap">Append | Immutable</string>
+    <string name="mode_badfp">Bad File Path</string>
+    <string name="unchanged">Unchanged</string>
+</resources>
