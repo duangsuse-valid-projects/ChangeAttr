@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ChangeAttr extends Activity {
     private static final String message = "%1$s\n\n%2$s\n\n" + "%3$s\n\n%4$s\n";
     private static Ext2Attr e2;
@@ -30,18 +33,25 @@ public class ChangeAttr extends Activity {
             e.printStackTrace();
         });
 
+        Timer timer = new Timer();
+
         a = new AlertDialog.Builder(this)
+                .setTitle(R.string.acquire_root)
+                .setIcon(R.drawable.icon)
                 .setMessage(R.string.wait_for_perm)
                 .setCancelable(false)
                 .setOnCancelListener((v) -> run()).show();
 
         e2 = new Ext2Attr(getExecPath());
 
-        new Thread(() -> {
-            // noinspection StatementWithEmptyBody
-            while (e2.not_connected());
-            a.cancel();
-        }).run();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // noinspection StatementWithEmptyBody
+                while (e2.not_connected());
+                a.cancel();
+            }
+        }, 100);
     }
 
     private void run() {
