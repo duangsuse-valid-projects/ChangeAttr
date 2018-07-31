@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @see "https://github.com/duangsuse/attrtools"
  * @see "e2imutable.c"
  * @since 1.0
- * @version 1.1
+ * @version 1.2
  */
 public class Ext2Attr implements Closeable {
     private static final String command_fmt = "%1$s %2$s %3$s;printf $?_";
@@ -45,24 +45,32 @@ public class Ext2Attr implements Closeable {
     @SuppressWarnings("WeakerAccess")
     public Scanner stderr = null;
 
-    /** Default constructor */
+    /** Default constructor
+     *
+     * @param su_path Super User binary path
+     * @param lib_path e2im program path
+     */
     @SuppressWarnings("unused")
     public Ext2Attr(String su_path, String lib_path) {
         this.su_path = su_path;
         this.lib_path = lib_path;
-        connect();
+        new Thread(this::connect).start();
     }
 
+    /** Construct a new instance using custom executable
+     *
+     * @param lib_path e2im executable library path
+     */
     @SuppressWarnings("WeakerAccess")
     public Ext2Attr(String lib_path) {
         this.lib_path = lib_path;
-        connect();
+        new Thread(this::connect).start();
     }
 
+    /** Use this constructor to avoid connect() when start
+     */
     @SuppressWarnings("unused")
-    public Ext2Attr() {
-        connect();
-    }
+    public Ext2Attr() {}
 
     /** Disconnect form shell */
     @Override
@@ -94,9 +102,24 @@ public class Ext2Attr implements Closeable {
         stdout.useDelimiter("_");
     }
 
-    /** Connected with shell? */
-    public boolean connected() {
-        return shell != null && stdin != null;
+    /** Not connected with shell? */
+    public boolean not_connected() {
+        return shell == null || stdin == null || !isAlive(shell);
+    }
+
+    /** Is a process alive?
+     *
+     * @param p target process
+     * @return true if alive
+     */
+    private static boolean isAlive(Process p) {
+        boolean ret = false;
+        try {
+            p.exitValue();
+        } catch (IllegalThreadStateException ignored) {
+            ret = true;
+        }
+        return ret;
     }
 
     /** Query file attribute

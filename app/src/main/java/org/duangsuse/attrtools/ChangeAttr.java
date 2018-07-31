@@ -1,6 +1,7 @@
 package org.duangsuse.attrtools;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -16,12 +17,35 @@ import android.widget.Toast;
 
 public class ChangeAttr extends Activity {
     private static final String message = "%1$s\n\n%2$s\n\n" + "%3$s\n\n%4$s\n";
+    private static Ext2Attr e2;
+    private static AlertDialog a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_attr);
         setFinishOnTouchOutside(true);
+
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        });
+
+        a = new AlertDialog.Builder(this)
+                .setMessage(R.string.wait_for_perm)
+                .setCancelable(false)
+                .setOnCancelListener((v) -> run()).show();
+
+        e2 = new Ext2Attr(getExecPath());
+
+        new Thread(() -> {
+            // noinspection StatementWithEmptyBody
+            while (e2.not_connected());
+            a.cancel();
+        }).run();
+    }
+
+    private void run() {
+        setContentView(R.layout.activity_change_attr);
 
         TextView readme = findViewById(R.id.readme);
         Button addi = findViewById(R.id.add_i);
@@ -29,24 +53,24 @@ public class ChangeAttr extends Activity {
 
         readme.setTextIsSelectable(true);
 
+        if (e2.not_connected() && !a.isShowing())
+            toast(R.string.connect_failed);
+
         String path = path();
         if (path == null) {
             finish();
             return;
         }
 
-        Ext2Attr e2 = new Ext2Attr(getExecPath());
-
-        if (!e2.connected())
-            toast(R.string.connect_failed);
-
         int m = 0;
-        String mode = null;
+        String mode;
 
         try {
             m = e2.query(path);
         } catch (RuntimeException e) {
             toast(e);
+        } catch (Exception e1) {
+            toast(e1);
         }
 
         switch (m) {
@@ -64,6 +88,9 @@ public class ChangeAttr extends Activity {
                 break;
             case -1:
                 mode = getString(R.string.mode_badfp);
+                break;
+            default:
+                mode = getString(R.string.err_no_perm);
         }
 
         SpannableString text = SpannableString.valueOf(String.format(message, getString(R.string.file_path), path, getString(R.string.mode), mode));
@@ -102,12 +129,33 @@ public class ChangeAttr extends Activity {
         return getApplicationInfo().nativeLibraryDir + "/libe2im.so";
     }
 
-    private void toast(@NonNull RuntimeException e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    private void toast(@NonNull Exception e) {
+        Toast.makeText(this, mapMessage(e.getMessage()), Toast.LENGTH_SHORT).show();
     }
 
     private void toast(int res_id) {
         Toast.makeText(this, res_id, Toast.LENGTH_SHORT).show();
+    }
+
+    private String mapMessage(String message) {
+        if (message == null)
+            return getString(R.string.no_perm);
+
+        switch (message) {
+            case "Function not implemented":
+                return getString(R.string.err_func_no_imp);
+            case "Not a typewriter":
+                return getString(R.string.err_not_typewriter);
+            case "Operation not supported":
+                return getString(R.string.err_not_supp);
+            case "Operation not supported on transport endpoint":
+                return getString(R.string.err_not_supported);
+            case "Inappropriate ioctl for device":
+                return getString(R.string.err_bad_ioctl);
+            case "Operation not permitted":
+                return getString(R.string.err_no_perm);
+        }
+        return message;
     }
 
     @Nullable
@@ -121,5 +169,11 @@ public class ChangeAttr extends Activity {
         }
 
         return data.getPath();
+    }
+
+    @Override
+    public void finish() {
+        e2.close();
+        super.finish();
     }
 }

@@ -15,4 +15,12 @@
     <string name="mode_imap">只增量且不可變</string>
     <string name="mode_badfp">檔案路徑錯誤或不可接受</string>
     <string name="unchanged">屬性沒有改變</string>
+    <string name="err_func_no_imp">设备没有实现此功能</string>
+    <string name="err_not_typewriter">Not a typewriter</string>
+    <string name="err_not_supported">Operation not supported on file</string>
+    <string name="err_not_supp">Operation not supported</string>
+    <string name="err_bad_ioctl">Bad ioctl call for device</string>
+    <string name="err_no_perm">No permission to change attribute</string>
+    <string name="wait_for_perm">Waiting for root shell</string>
+    <string name="no_perm">No permission</string>
 </resources>
