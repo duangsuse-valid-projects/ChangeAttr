@@ -22,14 +22,14 @@
 
         <Button
             android:id="@+id/sub_i"
-            style="@android:style/ButtonBar"
+            style="@style/Bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sub_i" />
 
         <Button
             android:id="@+id/add_i"
-            style="@android:style/ButtonBar"
+            style="@style/Bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_i"
