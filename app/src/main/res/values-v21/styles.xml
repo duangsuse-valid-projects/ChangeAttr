@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Dialog" parent="android:Theme.Material.Dialog" />
-    <style name="Bar" parent="android:Widget.Material.ButtonBar.AlertDialog" />
+    <style name="Bar" parent="android:Widget.Material.Button" />
 </resources>

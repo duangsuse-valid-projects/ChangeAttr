@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
@@ -16,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ChangeAttr extends Activity {
+    private static final String message = "%1$s\n\n%2$s\n\n" + "%3$s\n\n%4$s\n";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class ChangeAttr extends Activity {
             toast(R.string.connect_failed);
 
         int m = 0;
-        String mode = "";
+        String mode = null;
 
         try {
             m = e2.query(path);
@@ -65,7 +66,7 @@ public class ChangeAttr extends Activity {
                 mode = getString(R.string.mode_badfp);
         }
 
-        SpannableString text = SpannableString.valueOf(String.format("%1$s\n\n%2$s\n\n" + "%3$s\n\n%4$s\n", getString(R.string.file_path), path, getString(R.string.mode), mode));
+        SpannableString text = SpannableString.valueOf(String.format(message, getString(R.string.file_path), path, getString(R.string.mode), mode));
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.GREEN);
         int start = 2 + getString(R.string.file_path).length();
         text.setSpan(colorSpan, start, start + path.length(), Spanned.SPAN_MARK_MARK);

@@ -12,9 +12,11 @@ import java.util.Scanner;
  * @see "https://github.com/duangsuse/attrtools"
  * @see "e2imutable.c"
  * @since 1.0
- * @version 1.0
+ * @version 1.1
  */
 public class Ext2Attr implements Closeable {
+    private static final String command_fmt = "%1$s %2$s %3$s;printf $?_";
+    private static final String parse_error_msg = "Cannot parse status";
     /** Error string field */
     @SuppressWarnings("WeakerAccess")
     public static String error = "";
@@ -108,7 +110,7 @@ public class Ext2Attr implements Closeable {
      * @throws RuntimeException reading attr fails
      */
     public byte query(String path) throws RuntimeException {
-        String command = String.format("%1$s @ %2$s;printf $?_", lib_path, path);
+        String command = String.format(command_fmt, lib_path, '@', path);
         stdin.println(command);
         stdin.flush();
 
@@ -127,7 +129,7 @@ public class Ext2Attr implements Closeable {
             case 3:
                 return 3;
             default:
-                throw new RuntimeException("Cannot parse status");
+                throw new RuntimeException(parse_error_msg);
         }
     }
 
@@ -140,7 +142,7 @@ public class Ext2Attr implements Closeable {
      * @throws RuntimeException change attr fails
      */
     public byte addi(String path) throws RuntimeException {
-        String command = String.format("%1$s + %2$s;printf $?_", lib_path, path);
+        String command = String.format(command_fmt, lib_path, '+', path);
         stdin.println(command);
         stdin.flush();
 
@@ -155,7 +157,7 @@ public class Ext2Attr implements Closeable {
                 error = stderr.nextLine();
                 throw new RuntimeException(error);
             default:
-                throw new RuntimeException("Cannot parse status");
+                throw new RuntimeException(parse_error_msg);
         }
     }
 
@@ -168,7 +170,7 @@ public class Ext2Attr implements Closeable {
      * @throws RuntimeException change attr fails
      */
     public byte subi(String path) throws RuntimeException {
-        String command = String.format("%1$s - %2$s;printf $?_", lib_path, path);
+        String command = String.format(command_fmt, lib_path, '-', path);
         stdin.println(command);
         stdin.flush();
 
@@ -183,7 +185,7 @@ public class Ext2Attr implements Closeable {
                 error = stderr.nextLine();
                 throw new RuntimeException(error);
             default:
-                throw new RuntimeException("Cannot parse status");
+                throw new RuntimeException(parse_error_msg);
         }
     }
 }
