@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">檔案屬性工具</string>
+    <string name="app_name">文件屬性工具</string>
     <string name="title_activity_change_attr">修改屬性</string>
-    <string name="file_path">檔案路徑：</string>
-    <string name="mode">檔案狀態：</string>
+    <string name="file_path">文件路徑：</string>
+    <string name="mode">文件狀態：</string>
     <string name="sub_i">轉為可變</string>
     <string name="add_i">轉為不可變</string>
     <string name="loading">載入中…</string>
-    <string name="no_path">獲取檔案路徑失敗</string>
-    <string name="connect_failed">無法連線到 e2im 後端</string>
+    <string name="no_path">獲取文件路徑失敗</string>
+    <string name="connect_failed">無法連接到 e2im 後端</string>
     <string name="mode_no">無特殊模式</string>
     <string name="mode_imm">不可變</string>
     <string name="mode_app">只增量</string>
     <string name="mode_imap">只增量且不可變</string>
-    <string name="mode_badfp">檔案路徑錯誤或不可接受</string>
+    <string name="mode_badfp">文件路徑錯誤或不可接受</string>
     <string name="unchanged">屬性沒有改變</string>
-    <string name="err_func_no_imp">设备没有实现此功能</string>
-    <string name="err_not_typewriter">Not a typewriter</string>
-    <string name="err_not_supported">Operation not supported on file</string>
-    <string name="err_not_supp">Operation not supported</string>
-    <string name="err_bad_ioctl">Bad ioctl call for device</string>
-    <string name="err_no_perm">No permission to change attribute</string>
-    <string name="wait_for_perm">Waiting for root shell</string>
-    <string name="no_perm">No permission</string>
-    <string name="acquire_root">Acquiring root</string>
+    <string name="err_func_no_imp">設備沒有實現此功能</string>
+    <string name="err_not_typewriter">文件不可寫</string>
+    <string name="err_not_supported">文件不支持這個操作</string>
+    <string name="err_not_supp">不支持此操作</string>
+    <string name="err_bad_ioctl">設備不支持此 ioctl 調用</string>
+    <string name="err_no_perm">無權改變此屬性</string>
+    <string name="wait_for_perm">等待 root 命令行</string>
+    <string name="no_perm">沒有 root 權限</string>
+    <string name="acquire_root">正在獲取 root 權限</string>
 </resources>
